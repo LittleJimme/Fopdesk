@@ -13,7 +13,6 @@
       --danger-dark: #240909;
       --success: #2ecc71;
       --muted: #cbd5e1;
-      --panel-bg: rgba(8, 12, 18, 0.92);
       --panel-border: rgba(255, 255, 255, 0.09);
       --bg-0: #05070a;
       --bg-1: #070b10;
@@ -116,7 +115,13 @@
     hr {
       border: 0;
       height: 1px;
-      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, rgba(255,255,255,0));
+      background: linear-gradient(
+        90deg,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0.1) 20%,
+        rgba(255,255,255,0.1) 80%,
+        rgba(255,255,255,0)
+      );
     }
 
     .lockout-sticky-group {
@@ -132,7 +137,7 @@
       border-radius: 14px;
       padding: 18px;
       font-size: 0.96rem;
-      line-height: 1.6;
+      line-height: 1.55;
       color: var(--muted);
       min-height: 118px;
       transition: background-color 0.25s ease, border-color 0.25s ease;
@@ -162,13 +167,14 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 12px;
-      padding: 14px 18px;
-      font-size: 0.93rem;
-      line-height: 1.5;
+      padding: 12px 16px;
+      font-size: 0.92rem;
+      line-height: 1.4;
       color: var(--muted);
-      min-height: 66px;
+      min-height: 58px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      gap: 10px;
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
       overflow: hidden;
       position: relative;
@@ -186,6 +192,27 @@
       background: rgba(174, 200, 20, 0.05);
       border-color: rgba(174, 200, 20, 0.20);
       text-shadow: none;
+    }
+
+    .clue-emoji {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      min-width: 1.5rem;
+      font-size: 1.1rem;
+      line-height: 1;
+      font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+      font-variant-emoji: emoji;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      transform: translateY(1px);
+    }
+
+    .clue-card .clue-copy {
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .classification-status {
@@ -396,7 +423,7 @@
     }
 
     .clue-card .stable-glitch {
-      min-height: 3em;
+      min-height: 1.2em;
     }
 
     .stable-glitch .stable-text,
@@ -463,7 +490,7 @@
       .panel-left {
         border-right: none;
         border-bottom: 1px solid var(--panel-border);
-        gap: 14px;
+        gap: 12px;
       }
 
       .panel-right {
@@ -490,26 +517,37 @@
         z-index: 25;
         padding: 8px 0 10px;
         background: linear-gradient(180deg, rgba(5, 7, 10, 0.96), rgba(5, 7, 10, 0.85));
+        backdrop-filter: blur(8px);
       }
 
       .status-panel {
         min-height: auto;
         padding: 14px;
         font-size: 0.9rem;
+        line-height: 1.45;
       }
 
       .clues-title {
-        font-size: 0.88rem;
+        font-size: 0.86rem;
       }
 
       .clues-section {
-        gap: 8px;
+        gap: 7px;
       }
 
       .clue-card {
-        min-height: auto;
-        padding: 12px 14px;
-        font-size: 0.9rem;
+        min-height: 50px;
+        padding: 10px 12px;
+        font-size: 0.86rem;
+        line-height: 1.32;
+        gap: 8px;
+      }
+
+      .clue-emoji {
+        width: 1.4rem;
+        min-width: 1.4rem;
+        font-size: 1.08rem;
+        transform: translateY(0);
       }
 
       .classification-status {
@@ -534,7 +572,7 @@
       }
 
       .form-text {
-        font-size: 0.82rem;
+        font-size: 0.8rem;
         margin-bottom: 10px;
       }
 
@@ -551,14 +589,14 @@
       }
 
       .custom-control-label {
-        min-height: 48px;
+        min-height: 46px;
         height: auto;
         padding: 8px 10px;
-        font-size: 0.88rem;
+        font-size: 0.86rem;
       }
 
       .custom-control-label .stable-glitch {
-        min-height: 2.6em;
+        min-height: 2.5em;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -573,9 +611,9 @@
       }
 
       .submit-btn {
-        min-height: 56px;
-        font-size: 0.92rem;
-        letter-spacing: 1.2px;
+        min-height: 54px;
+        font-size: 0.9rem;
+        letter-spacing: 1.1px;
       }
 
       .progress-track-wrapper {
@@ -594,7 +632,25 @@
       }
 
       h2 {
-        font-size: 1.25rem;
+        font-size: 1.22rem;
+      }
+
+      .clues-title {
+        font-size: 0.82rem;
+      }
+
+      .clue-card {
+        min-height: 46px;
+        padding: 9px 10px;
+        font-size: 0.82rem;
+        line-height: 1.28;
+        gap: 7px;
+      }
+
+      .clue-emoji {
+        width: 1.32rem;
+        min-width: 1.32rem;
+        font-size: 1rem;
       }
 
       .radio-flex-row {
@@ -602,8 +658,8 @@
       }
 
       .custom-control-label {
-        min-height: 46px;
-        font-size: 0.9rem;
+        min-height: 44px;
+        font-size: 0.88rem;
       }
     }
   </style>
@@ -632,11 +688,12 @@
 
       <div id="cluesSection" class="clues-section">
         <div class="clues-title">🔍 Aanwijzingen servicemelding:</div>
-        <div id="clue0" data-orig="📡 De gebruiker heeft de juiste autorisatie maar kan de service niet gebruiken." class="clue-card">📡 De gebruiker heeft de juiste autorisatie maar kan de service niet gebruiken.</div>
-        <div id="clue1" data-orig="🖥️ De storing treedt alleen op bij een specifieke applicatie, niet systeemwijd." class="clue-card">🖥️ De storing treedt alleen op bij een specifieke applicatie, niet systeemwijd.</div>
-        <div id="clue2" data-orig="👥 Slechts een deel van de gebruikers heeft last van het probleem." class="clue-card">👥 Slechts een deel van de gebruikers heeft last van het probleem.</div>
-        <div id="clue3" data-orig="☁️ Het probleem bestaat buiten de fysieke infrastructuur van het kantoor." class="clue-card">☁️ Het probleem bestaat buiten de fysieke infrastructuur van het kantoor.</div>
-        <div id="clue4" data-orig="🔄 Na het opnieuw starten van de dienst werkt alles weer tijdelijk." class="clue-card">🔄 Na het opnieuw starten van de dienst werkt alles weer tijdelijk.</div>
+
+        <div id="clue0" data-emoji="📡" data-text="De gebruiker heeft de juiste autorisatie maar kan de service niet gebruiken." class="clue-card"></div>
+        <div id="clue1" data-emoji="🖥️" data-text="De storing treedt alleen op bij een specifieke applicatie, niet systeemwijd." class="clue-card"></div>
+        <div id="clue2" data-emoji="👥" data-text="Slechts een deel van de gebruikers heeft last van het probleem." class="clue-card"></div>
+        <div id="clue3" data-emoji="☁️" data-text="Het probleem bestaat buiten de fysieke infrastructuur van het kantoor." class="clue-card"></div>
+        <div id="clue4" data-emoji="🔄" data-text="Na het opnieuw starten van de dienst werkt alles weer tijdelijk." class="clue-card"></div>
       </div>
     </div>
 
@@ -659,27 +716,27 @@
             <span class="form-text">Selecteer de juiste categorie van de binnengekomen melding.</span>
             <div class="radio-flex-row">
               <div class="custom-control">
-                <input name="radio" id="radio_0" type="radio" value="netwerk" required="required" onchange="updateSelection('t1', 'Netwerk')">
+                <input name="radio" id="radio_0" type="radio" value="netwerk" required onchange="updateSelection('t1', 'Netwerk')">
                 <label for="radio_0" id="lbl_radio_0" data-orig="Netwerk" class="custom-control-label">Netwerk</label>
               </div>
               <div class="custom-control">
-                <input name="radio" id="radio_1" type="radio" value="security" required="required" onchange="updateSelection('t1', 'Security')">
+                <input name="radio" id="radio_1" type="radio" value="security" required onchange="updateSelection('t1', 'Security')">
                 <label for="radio_1" id="lbl_radio_1" data-orig="Security" class="custom-control-label">Security</label>
               </div>
               <div class="custom-control">
-                <input name="radio" id="radio_3" type="radio" required="required" value="hardware" onchange="updateSelection('t1', 'Hardware')">
+                <input name="radio" id="radio_3" type="radio" value="hardware" required onchange="updateSelection('t1', 'Hardware')">
                 <label for="radio_3" id="lbl_radio_3" data-orig="Hardware" class="custom-control-label">Hardware</label>
               </div>
               <div class="custom-control">
-                <input name="radio" id="radio_2" type="radio" value="applicatie" required="required" onchange="updateSelection('t1', 'Applicatie')">
+                <input name="radio" id="radio_2" type="radio" value="applicatie" required onchange="updateSelection('t1', 'Applicatie')">
                 <label for="radio_2" id="lbl_radio_2" data-orig="App" class="custom-control-label">App</label>
               </div>
               <div class="custom-control">
-                <input name="radio" id="radio_4" type="radio" required="required" value="data" onchange="updateSelection('t1', 'Data')">
+                <input name="radio" id="radio_4" type="radio" value="data" required onchange="updateSelection('t1', 'Data')">
                 <label for="radio_4" id="lbl_radio_4" data-orig="Data" class="custom-control-label">Data</label>
               </div>
               <div class="custom-control">
-                <input name="radio" id="radio_5" type="radio" required="required" value="telefonie" onchange="updateSelection('t1', 'Telefonie')">
+                <input name="radio" id="radio_5" type="radio" value="telefonie" required onchange="updateSelection('t1', 'Telefonie')">
                 <label for="radio_5" id="lbl_radio_5" data-orig="Tel" class="custom-control-label">Tel</label>
               </div>
             </div>
@@ -690,23 +747,23 @@
             <span class="form-text">Bepaal wat de impact van de storing is op de zorgorganisatie.</span>
             <div class="radio-flex-row">
               <div class="custom-control">
-                <input name="radio1" id="radio1_0" type="radio" value="geen" required="required" onchange="updateSelection('t2', 'Geen')">
+                <input name="radio1" id="radio1_0" type="radio" value="geen" required onchange="updateSelection('t2', 'Geen')">
                 <label for="radio1_0" id="lbl_radio1_0" data-orig="Geen" class="custom-control-label">Geen</label>
               </div>
               <div class="custom-control">
-                <input name="radio1" id="radio1_1" type="radio" value="laag" required="required" onchange="updateSelection('t2', 'Laag')">
+                <input name="radio1" id="radio1_1" type="radio" value="laag" required onchange="updateSelection('t2', 'Laag')">
                 <label for="radio1_1" id="lbl_radio1_1" data-orig="Laag" class="custom-control-label">Laag</label>
               </div>
               <div class="custom-control">
-                <input name="radio1" id="radio1_2" type="radio" value="gemiddeld" required="required" onchange="updateSelection('t2', 'Gemiddeld')">
+                <input name="radio1" id="radio1_2" type="radio" value="gemiddeld" required onchange="updateSelection('t2', 'Gemiddeld')">
                 <label for="radio1_2" id="lbl_radio1_2" data-orig="Gemiddeld" class="custom-control-label">Gemiddeld</label>
               </div>
               <div class="custom-control">
-                <input name="radio1" id="radio1_3" type="radio" value="hoog" required="required" onchange="updateSelection('t2', 'Hoog')">
+                <input name="radio1" id="radio1_3" type="radio" value="hoog" required onchange="updateSelection('t2', 'Hoog')">
                 <label for="radio1_3" id="lbl_radio1_3" data-orig="Hoog" class="custom-control-label">Hoog</label>
               </div>
               <div class="custom-control">
-                <input name="radio1" id="radio1_4" type="radio" value="kritiek" required="required" onchange="updateSelection('t2', 'Kritiek')">
+                <input name="radio1" id="radio1_4" type="radio" value="kritiek" required onchange="updateSelection('t2', 'Kritiek')">
                 <label for="radio1_4" id="lbl_radio1_4" data-orig="Kritiek" class="custom-control-label">Kritiek</label>
               </div>
             </div>
@@ -717,27 +774,27 @@
             <span class="form-text">Op welke specifieke hosting- of netwerklocatie bevindt de dienst zich?</span>
             <div class="radio-flex-row">
               <div class="custom-control">
-                <input name="radio2" id="radio2_0" type="radio" value="kantoor" required="required" onchange="updateSelection('t3', 'Kantoor')">
+                <input name="radio2" id="radio2_0" type="radio" value="kantoor" required onchange="updateSelection('t3', 'Kantoor')">
                 <label for="radio2_0" id="lbl_radio2_0" data-orig="Kantoor" class="custom-control-label">Kantoor</label>
               </div>
               <div class="custom-control">
-                <input name="radio2" id="radio2_1" type="radio" value="cloudomgeving" required="required" onchange="updateSelection('t3', 'Cloudomgeving')">
+                <input name="radio2" id="radio2_1" type="radio" value="cloudomgeving" required onchange="updateSelection('t3', 'Cloudomgeving')">
                 <label for="radio2_1" id="lbl_radio2_1" data-orig="Cloud" class="custom-control-label">Cloud</label>
               </div>
               <div class="custom-control">
-                <input name="radio2" id="radio2_2" type="radio" value="onpremise" required="required" onchange="updateSelection('t3', 'On-premise')">
+                <input name="radio2" id="radio2_2" type="radio" value="onpremise" required onchange="updateSelection('t3', 'On-premise')">
                 <label for="radio2_2" id="lbl_radio2_2" data-orig="On-Prem" class="custom-control-label">On-Prem</label>
               </div>
               <div class="custom-control">
-                <input name="radio2" id="radio2_3" type="radio" required="required" value="datacenter" onchange="updateSelection('t3', 'Datacenter')">
+                <input name="radio2" id="radio2_3" type="radio" value="datacenter" required onchange="updateSelection('t3', 'Datacenter')">
                 <label for="radio2_3" id="lbl_radio2_3" data-orig="DataCent" class="custom-control-label">DataCent</label>
               </div>
               <div class="custom-control">
-                <input name="radio2" id="radio2_4" type="radio" required="required" value="externetoegang" onchange="updateSelection('t3', 'Externe toegang')">
+                <input name="radio2" id="radio2_4" type="radio" value="externetoegang" required onchange="updateSelection('t3', 'Externe toegang')">
                 <label for="radio2_4" id="lbl_radio2_4" data-orig="Extern" class="custom-control-label">Extern</label>
               </div>
               <div class="custom-control">
-                <input name="radio2" id="radio2_5" type="radio" required="required" value="Thuiswerkplek" onchange="updateSelection('t3', 'Thuiswerkplek')">
+                <input name="radio2" id="radio2_5" type="radio" value="Thuiswerkplek" required onchange="updateSelection('t3', 'Thuiswerkplek')">
                 <label for="radio2_5" id="lbl_radio2_5" data-orig="Thuis" class="custom-control-label">Thuis</label>
               </div>
             </div>
@@ -766,6 +823,27 @@
       "lbl_radio2_0", "lbl_radio2_1", "lbl_radio2_2", "lbl_radio2_3", "lbl_radio2_4", "lbl_radio2_5"
     ];
 
+    const clueIds = ["clue0", "clue1", "clue2", "clue3", "clue4"];
+
+    function prepareClueTarget(element) {
+      if (!element || element.dataset.glitchPrepared === "true") {
+        return;
+      }
+
+      const emoji = element.dataset.emoji || "";
+      const originalText = element.dataset.text || element.textContent.trim();
+      element.dataset.text = originalText;
+
+      element.innerHTML = `
+        <span class="clue-emoji" aria-hidden="true">${emoji}</span>
+        <span class="clue-copy stable-glitch">
+          <span class="stable-text">${escapeHtml(originalText)}</span>
+          <span class="glitch-layer" aria-hidden="true">${escapeHtml(originalText)}</span>
+        </span>
+      `;
+      element.dataset.glitchPrepared = "true";
+    }
+
     function prepareStableGlitchTarget(element) {
       if (!element || element.dataset.glitchPrepared === "true") {
         return;
@@ -783,9 +861,7 @@
     }
 
     function initialiseGlitchTargets() {
-      for (let i = 0; i < 5; i++) {
-        prepareStableGlitchTarget(document.getElementById(`clue${i}`));
-      }
+      clueIds.forEach(id => prepareClueTarget(document.getElementById(id)));
       labelIds.forEach(id => prepareStableGlitchTarget(document.getElementById(id)));
     }
 
@@ -810,7 +886,7 @@
 
     function restoreStableText(element) {
       if (!element) return;
-      const originalText = element.dataset.orig || "";
+      const originalText = element.dataset.text || element.dataset.orig || "";
       setVisibleGlitchText(element, originalText);
     }
 
@@ -829,6 +905,7 @@
       const r2 = document.querySelector('input[name="radio1"]:checked');
       const r3 = document.querySelector('input[name="radio2"]:checked');
       const btn = document.getElementById("submitBtn");
+
       if (r1 && r2 && r3) {
         btn.classList.add("active");
       } else {
@@ -845,7 +922,7 @@
     }
 
     function blink() {
-      for (let i = 0; i < 3000; i = i + 1000) {
+      for (let i = 0; i < 3000; i += 1000) {
         setTimeout(hide, i);
         setTimeout(show, i + 250);
       }
@@ -858,11 +935,11 @@
     function startGlitch() {
       if (glitchInterval) clearInterval(glitchInterval);
 
-      for (let i = 0; i < 5; i++) {
-        const clue = document.getElementById(`clue${i}`);
+      clueIds.forEach(id => {
+        const clue = document.getElementById(id);
         clue.classList.add("glitched-text");
         clue.classList.remove("repaired-text");
-      }
+      });
 
       glitchInterval = setInterval(() => {
         const savedEndTime = Number(localStorage.getItem("fopdesk_lock_endtime"));
@@ -874,9 +951,9 @@
           ? Math.min(1, (elapsed - PHASE_1_DURATION) / PHASE_2_DURATION)
           : 0;
 
-        for (let i = 0; i < 5; i++) {
-          const clue = document.getElementById(`clue${i}`);
-          const original = clue.dataset.orig || "";
+        clueIds.forEach(id => {
+          const clue = document.getElementById(id);
+          const original = clue.dataset.text || "";
           const unglitchCount = Math.floor(original.length * ratio);
 
           if (ratio >= 0.985) {
@@ -887,16 +964,17 @@
           let scrambled = "";
           for (let j = 0; j < original.length; j++) {
             const currentChar = original[j];
-            if (j < 3 || currentChar === " " || j < unglitchCount) {
+            if (currentChar === " " || j < unglitchCount) {
               scrambled += currentChar;
             } else {
               scrambled += getRandomGlitchChar();
             }
           }
-          setVisibleGlitchText(clue, scrambled);
-        }
 
-        labelIds.forEach((id) => {
+          setVisibleGlitchText(clue.querySelector(".clue-copy"), scrambled);
+        });
+
+        labelIds.forEach(id => {
           const label = document.getElementById(id);
           const original = label.dataset.orig || "";
           const unglitchCount = Math.floor(original.length * ratio);
@@ -922,20 +1000,20 @@
         glitchInterval = null;
       }
 
-      for (let i = 0; i < 5; i++) {
-        const clue = document.getElementById(`clue${i}`);
+      clueIds.forEach(id => {
+        const clue = document.getElementById(id);
         clue.classList.remove("glitched-text", "repaired-text");
-        restoreStableText(clue);
-      }
+        restoreStableText(clue.querySelector(".clue-copy"));
+      });
 
-      labelIds.forEach((id) => {
+      labelIds.forEach(id => {
         restoreStableText(document.getElementById(id));
       });
     }
 
     function disableRadioButtons(disable) {
       const radios = document.querySelectorAll('input[type="radio"]');
-      radios.forEach((radio) => {
+      radios.forEach(radio => {
         radio.disabled = disable;
         if (disable) {
           radio.checked = false;
@@ -979,6 +1057,7 @@
       current.style.color = "var(--danger)";
       classif.style.display = "inline";
       classif.innerHTML = `<span id="nietgoed">is niet goed</span> (<span id="t1">Security</span> - <span id="t2">Kritiek</span> - <span id="t3">Datacenter</span>)`;
+
       status.style.background = "rgba(255, 59, 59, 0.05)";
       status.style.borderColor = "rgba(255, 59, 59, 0.15)";
       status.innerHTML = `
@@ -1045,6 +1124,7 @@
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
       }
+
       localStorage.removeItem("fopdesk_lock_endtime");
       isLocked = false;
       disableRadioButtons(false);
@@ -1112,6 +1192,8 @@
 
       if (t1 === "Applicatie" && t2 === "Gemiddeld" && t3 === "Cloudomgeving") {
         const solution = document.getElementById("solution");
+        const target = document.getElementById("classificationSection");
+
         document.getElementById("classificationContent").style.display = "none";
         document.getElementById("current").style.color = "var(--success)";
         document.getElementById("current").style.visibility = "visible";
@@ -1124,6 +1206,10 @@
 
         btn.style.display = "none";
         showProgressWrapper(false);
+
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       } else {
         blink();
         hideFormOnError();
