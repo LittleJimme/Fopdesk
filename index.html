@@ -119,6 +119,13 @@
       background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, rgba(255,255,255,0));
     }
 
+    .lockout-sticky-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 5;
+    }
+
     .status-panel {
       background: rgba(255, 59, 59, 0.05);
       border: 1px solid rgba(255, 59, 59, 0.15);
@@ -226,7 +233,16 @@
       text-transform: uppercase;
       font-size: 0.85rem;
       color: var(--asvz-brand-green);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
+    }
+
+    .form-text {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      opacity: 0.72;
+      line-height: 1.35;
+      margin-bottom: 10px;
     }
 
     .radio-flex-row {
@@ -238,7 +254,6 @@
       overflow: hidden;
       padding: 3px;
       gap: 3px;
-      margin-bottom: 8px;
       min-height: 42px;
     }
 
@@ -287,15 +302,6 @@
       box-shadow: 0 4px 12px rgba(174, 200, 20, 0.22);
     }
 
-    .form-text {
-      display: block;
-      font-size: 0.8rem;
-      color: var(--muted);
-      opacity: 0.65;
-      padding-left: 4px;
-      line-height: 1.35;
-    }
-
     .submit-btn {
       width: 100%;
       min-height: 52px;
@@ -309,6 +315,7 @@
       letter-spacing: 2px;
       cursor: not-allowed;
       transition: background-color 0.24s ease, border-color 0.24s ease, color 0.24s ease, box-shadow 0.24s ease;
+      margin-top: 14px;
     }
 
     .submit-btn.active {
@@ -339,7 +346,6 @@
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 999px;
-      margin-top: 12px;
       overflow: hidden;
       visibility: hidden;
       opacity: 0;
@@ -433,33 +439,6 @@
       text-align: center;
     }
 
-    .mobile-nav {
-      display: none;
-    }
-
-    .mobile-nav-btn {
-      width: 100%;
-      min-height: 44px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05);
-      color: #fff;
-      font-weight: 700;
-      font-size: 0.92rem;
-      letter-spacing: 0.2px;
-      cursor: pointer;
-      transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-    }
-
-    .mobile-nav-btn:hover {
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(255,255,255,0.16);
-    }
-
-    .mobile-nav-btn:active {
-      transform: translateY(1px);
-    }
-
     @media (max-width: 900px) {
       body {
         display: block;
@@ -505,6 +484,14 @@
         line-height: 1.2;
       }
 
+      .lockout-active .lockout-sticky-group {
+        position: sticky;
+        top: 8px;
+        z-index: 25;
+        padding: 8px 0 10px;
+        background: linear-gradient(180deg, rgba(5, 7, 10, 0.96), rgba(5, 7, 10, 0.85));
+      }
+
       .status-panel {
         min-height: auto;
         padding: 14px;
@@ -544,6 +531,11 @@
 
       .form-section-title {
         font-size: 0.82rem;
+      }
+
+      .form-text {
+        font-size: 0.82rem;
+        margin-bottom: 10px;
       }
 
       .radio-flex-row {
@@ -589,12 +581,6 @@
       .progress-track-wrapper {
         height: 10px;
       }
-
-      .mobile-nav {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
     }
 
     @media (max-width: 480px) {
@@ -631,10 +617,17 @@
       </div>
       <hr>
 
-      <div id="statusPanel" class="status-panel">
-        <p><strong>Status:</strong> ❌ Geblokkeerd</p>
-        <p><strong>Fout:</strong> De huidige classificatie komt niet overeen met werkelijke situatie.</p>
-        <p><strong>Systeem:</strong> 🔄 Terugknop geblokkeerd</p>
+      <div id="lockoutStickyGroup" class="lockout-sticky-group">
+        <div id="statusPanel" class="status-panel">
+          <p><strong>Status:</strong> ❌ Geblokkeerd</p>
+          <p><strong>Fout:</strong> De huidige classificatie komt niet overeen met werkelijke situatie.</p>
+          <p><strong>Systeem:</strong> 🔄 Terugknop geblokkeerd</p>
+        </div>
+
+        <div id="progressTrackWrapper" class="progress-track-wrapper">
+          <div id="progressBarStriped" class="progress-bar-striped"></div>
+          <div id="progressBarSolid" class="progress-bar-solid"></div>
+        </div>
       </div>
 
       <div id="cluesSection" class="clues-section">
@@ -645,17 +638,9 @@
         <div id="clue3" data-orig="☁️ Het probleem bestaat buiten de fysieke infrastructuur van het kantoor." class="clue-card">☁️ Het probleem bestaat buiten de fysieke infrastructuur van het kantoor.</div>
         <div id="clue4" data-orig="🔄 Na het opnieuw starten van de dienst werkt alles weer tijdelijk." class="clue-card">🔄 Na het opnieuw starten van de dienst werkt alles weer tijdelijk.</div>
       </div>
-
-      <div class="mobile-nav">
-        <button type="button" class="mobile-nav-btn" onclick="scrollToForm()">Ga naar classificatie ↓</button>
-      </div>
     </div>
 
     <div class="panel-right">
-      <div class="mobile-nav">
-        <button type="button" class="mobile-nav-btn" onclick="scrollToClues()">↑ Terug naar aanwijzingen</button>
-      </div>
-
       <div id="classificationSection" class="classification-status">
         <h4>Status Classificatie:</h4>
         <b id="current" style="color: var(--danger)">
@@ -671,6 +656,7 @@
         <div id="formFieldsContainer">
           <div class="form-block">
             <div class="form-section-title">Categorie:</div>
+            <span class="form-text">Selecteer de juiste categorie van de binnengekomen melding.</span>
             <div class="radio-flex-row">
               <div class="custom-control">
                 <input name="radio" id="radio_0" type="radio" value="netwerk" required="required" onchange="updateSelection('t1', 'Netwerk')">
@@ -697,11 +683,11 @@
                 <label for="radio_5" id="lbl_radio_5" data-orig="Tel" class="custom-control-label">Tel</label>
               </div>
             </div>
-            <span class="form-text">Selecteer de juiste categorie van de binnengekomen melding.</span>
           </div>
 
           <div class="form-block">
             <div class="form-section-title">Impact:</div>
+            <span class="form-text">Bepaal wat de impact van de storing is op de zorgorganisatie.</span>
             <div class="radio-flex-row">
               <div class="custom-control">
                 <input name="radio1" id="radio1_0" type="radio" value="geen" required="required" onchange="updateSelection('t2', 'Geen')">
@@ -724,11 +710,11 @@
                 <label for="radio1_4" id="lbl_radio1_4" data-orig="Kritiek" class="custom-control-label">Kritiek</label>
               </div>
             </div>
-            <span class="form-text">Bepaal wat de impact van de storing is op de zorgorganisatie.</span>
           </div>
 
           <div class="form-block">
             <div class="form-section-title">Locatie:</div>
+            <span class="form-text">Op welke specifieke hosting- of netwerklocatie bevindt de dienst zich?</span>
             <div class="radio-flex-row">
               <div class="custom-control">
                 <input name="radio2" id="radio2_0" type="radio" value="kantoor" required="required" onchange="updateSelection('t3', 'Kantoor')">
@@ -755,15 +741,9 @@
                 <label for="radio2_5" id="lbl_radio2_5" data-orig="Thuis" class="custom-control-label">Thuis</label>
               </div>
             </div>
-            <span class="form-text">Op welke specifieke hosting- of netwerklocatie bevindt de dienst zich?</span>
           </div>
 
           <button id="submitBtn" type="button" class="submit-btn" onclick="processSubmission()">Classificatie indienen</button>
-        </div>
-
-        <div id="progressTrackWrapper" class="progress-track-wrapper">
-          <div id="progressBarStriped" class="progress-bar-striped"></div>
-          <div id="progressBarSolid" class="progress-bar-solid"></div>
         </div>
       </form>
     </div>
@@ -785,44 +765,6 @@
       "lbl_radio1_0", "lbl_radio1_1", "lbl_radio1_2", "lbl_radio1_3", "lbl_radio1_4",
       "lbl_radio2_0", "lbl_radio2_1", "lbl_radio2_2", "lbl_radio2_3", "lbl_radio2_4", "lbl_radio2_5"
     ];
-
-    function scrollToForm() {
-      const target = document.getElementById("classificationSection");
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-
-    function scrollToClues() {
-      const target = document.getElementById("cluesSection");
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-
-    function hideFormOnError() {
-      const formFieldsContainer = document.getElementById("formFieldsContainer");
-      if (formFieldsContainer) {
-        formFieldsContainer.style.display = "none";
-      }
-
-      const mobileNavs = document.querySelectorAll(".mobile-nav");
-      mobileNavs.forEach(nav => {
-        nav.style.display = "none";
-      });
-    }
-
-    function restoreFormAfterError() {
-      const formFieldsContainer = document.getElementById("formFieldsContainer");
-      if (formFieldsContainer) {
-        formFieldsContainer.style.display = "block";
-      }
-
-      const mobileNavs = document.querySelectorAll(".mobile-nav");
-      mobileNavs.forEach(nav => {
-        nav.style.display = "";
-      });
-    }
 
     function prepareStableGlitchTarget(element) {
       if (!element || element.dataset.glitchPrepared === "true") {
@@ -1006,6 +948,24 @@
       wrapper.classList.toggle("visible", show);
     }
 
+    function hideFormOnError() {
+      const formFieldsContainer = document.getElementById("formFieldsContainer");
+      if (formFieldsContainer) {
+        formFieldsContainer.style.display = "none";
+      }
+    }
+
+    function restoreFormAfterError() {
+      const formFieldsContainer = document.getElementById("formFieldsContainer");
+      if (formFieldsContainer) {
+        formFieldsContainer.style.display = "block";
+      }
+    }
+
+    function setLockoutState(active) {
+      document.body.classList.toggle("lockout-active", active);
+    }
+
     function resetToFaultState() {
       const btn = document.getElementById("submitBtn");
       const status = document.getElementById("statusPanel");
@@ -1028,10 +988,12 @@
       `;
 
       restoreFormAfterError();
+      setLockoutState(false);
 
       btn.textContent = "Classificatie indienen";
       btn.classList.remove("locked");
       btn.style.display = "block";
+
       striped.style.width = "0%";
       solid.style.width = "0%";
       showProgressWrapper(false);
@@ -1123,6 +1085,7 @@
       isLocked = true;
       disableRadioButtons(true);
       nextStatusPhase = null;
+      setLockoutState(true);
 
       const btn = document.getElementById("submitBtn");
       const endTime = Date.now() + durationMs;
@@ -1164,6 +1127,7 @@
       } else {
         blink();
         hideFormOnError();
+        window.scrollTo({ top: 0, behavior: "smooth" });
         startLockout(TOTAL_LOCK_TIME);
       }
     }
@@ -1177,7 +1141,9 @@
         const remaining = savedEndTime - Date.now();
         if (remaining > 0) {
           hideFormOnError();
+          setLockoutState(true);
           startLockout(remaining);
+          window.scrollTo({ top: 0, behavior: "auto" });
         } else {
           localStorage.removeItem("fopdesk_lock_endtime");
         }
