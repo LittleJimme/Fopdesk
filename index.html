@@ -232,9 +232,27 @@
     }
 
     #current {
+      display: inline-block;
       font-weight: 800;
       letter-spacing: 1px;
+      min-height: 1.3em;
       transition: color 0.2s ease, opacity 0.2s ease;
+      color: var(--muted);
+    }
+
+    #classificationPlaceholder {
+      display: inline;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.4px;
+    }
+
+    #classificationContent {
+      display: none;
+    }
+
+    .classification-result-prefix {
+      font-weight: 800;
     }
 
     #solution {
@@ -700,10 +718,9 @@
     <div class="panel-right">
       <div id="classificationSection" class="classification-status">
         <h4>Status Classificatie:</h4>
-        <b id="current" style="color: var(--danger)">
-          <span id="classificationContent">
-            <span id="nietgoed">is niet goed</span> (<span id="t1">Security</span> - <span id="t2">Kritiek</span> - <span id="t3">Datacenter</span>)
-          </span>
+        <b id="current">
+          <span id="classificationPlaceholder">Nog niet ingediend</span>
+          <span id="classificationContent"></span>
         </b>
       </div>
 
@@ -812,6 +829,12 @@
     let glitchInterval = null;
     let nextStatusPhase = null;
 
+    const selections = {
+      t1: "",
+      t2: "",
+      t3: ""
+    };
+
     const glitchChars = "XØWÆBQRKPMHNZ890#$&@§?";
     const TOTAL_LOCK_TIME = 120000;
     const PHASE_1_DURATION = 30000;
@@ -884,29 +907,44 @@
       }
     }
 
-    function restoreStableText(element) {
-      if (!element) return;
-      const originalText = element.dataset.text || element.dataset.orig || "";
-      setVisibleGlitchText(element, originalText);
+    function renderPendingClassification() {
+      const placeholder = document.getElementById("classificationPlaceholder");
+      const content = document.getElementById("classificationContent");
+      const current = document.getElementById("current");
+
+      placeholder.style.display = "inline";
+      content.style.display = "none";
+      content.innerHTML = "";
+      current.style.color = "var(--muted)";
+      current.style.visibility = "visible";
     }
 
-    function updateSelection(id, value) {
+    function renderSubmittedClassification(isCorrect) {
+      const placeholder = document.getElementById("classificationPlaceholder");
+      const content = document.getElementById("classificationContent");
+      const current = document.getElementById("current");
+
+      placeholder.style.display = "none";
+      content.style.display = "inline";
+      content.innerHTML = `
+        <span class="classification-result-prefix">${isCorrect ? "is goed" : "is niet goed"}</span>
+        (${selections.t1} - ${selections.t2} - ${selections.t3})
+      `;
+
+      current.style.color = isCorrect ? "var(--success)" : "var(--danger)";
+      current.style.visibility = "visible";
+    }
+
+    function updateSelection(type, value) {
       if (isLocked) return;
-      const target = document.getElementById(id);
-      if (target) {
-        target.textContent = value;
-      }
+      selections[type] = value;
       checkFormCompletion();
     }
 
     function checkFormCompletion() {
       if (isLocked) return;
-      const r1 = document.querySelector('input[name="radio"]:checked');
-      const r2 = document.querySelector('input[name="radio1"]:checked');
-      const r3 = document.querySelector('input[name="radio2"]:checked');
       const btn = document.getElementById("submitBtn");
-
-      if (r1 && r2 && r3) {
+      if (selections.t1 && selections.t2 && selections.t3) {
         btn.classList.add("active");
       } else {
         btn.classList.remove("active");
@@ -930,6 +968,28 @@
 
     function getRandomGlitchChar() {
       return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+    }
+
+    function restoreAllClues() {
+      clueIds.forEach(id => {
+        const clue = document.getElementById(id);
+        if (!clue) return;
+        clue.classList.remove("glitched-text", "repaired-text");
+        const originalText = clue.dataset.text || "";
+        const clueCopy = clue.querySelector(".clue-copy");
+        if (clueCopy) {
+          setVisibleGlitchText(clueCopy, originalText);
+        }
+      });
+    }
+
+    function restoreAllLabels() {
+      labelIds.forEach(id => {
+        const label = document.getElementById(id);
+        if (!label) return;
+        const originalText = label.dataset.orig || "";
+        setVisibleGlitchText(label, originalText);
+      });
     }
 
     function startGlitch() {
@@ -971,7 +1031,10 @@
             }
           }
 
-          setVisibleGlitchText(clue.querySelector(".clue-copy"), scrambled);
+          const clueCopy = clue.querySelector(".clue-copy");
+          if (clueCopy) {
+            setVisibleGlitchText(clueCopy, scrambled);
+          }
         });
 
         labelIds.forEach(id => {
@@ -999,16 +1062,8 @@
         clearInterval(glitchInterval);
         glitchInterval = null;
       }
-
-      clueIds.forEach(id => {
-        const clue = document.getElementById(id);
-        clue.classList.remove("glitched-text", "repaired-text");
-        restoreStableText(clue.querySelector(".clue-copy"));
-      });
-
-      labelIds.forEach(id => {
-        restoreStableText(document.getElementById(id));
-      });
+      restoreAllClues();
+      restoreAllLabels();
     }
 
     function disableRadioButtons(disable) {
@@ -1019,6 +1074,12 @@
           radio.checked = false;
         }
       });
+    }
+
+    function resetSelections() {
+      selections.t1 = "";
+      selections.t2 = "";
+      selections.t3 = "";
     }
 
     function showProgressWrapper(show) {
@@ -1047,17 +1108,18 @@
     function resetToFaultState() {
       const btn = document.getElementById("submitBtn");
       const status = document.getElementById("statusPanel");
-      const classif = document.getElementById("classificationContent");
       const current = document.getElementById("current");
       const striped = document.getElementById("progressBarStriped");
       const solid = document.getElementById("progressBarSolid");
       const solution = document.getElementById("solution");
 
-      current.style.visibility = "visible";
-      current.style.color = "var(--danger)";
-      classif.style.display = "inline";
-      classif.innerHTML = `<span id="nietgoed">is niet goed</span> (<span id="t1">Security</span> - <span id="t2">Kritiek</span> - <span id="t3">Datacenter</span>)`;
+      stopGlitch();
+      restoreAllClues();
+      restoreAllLabels();
+      resetSelections();
+      renderPendingClassification();
 
+      current.style.visibility = "visible";
       status.style.background = "rgba(255, 59, 59, 0.05)";
       status.style.borderColor = "rgba(255, 59, 59, 0.15)";
       status.innerHTML = `
@@ -1071,6 +1133,7 @@
 
       btn.textContent = "Classificatie indienen";
       btn.classList.remove("locked");
+      btn.classList.remove("active");
       btn.style.display = "block";
 
       striped.style.width = "0%";
@@ -1092,7 +1155,9 @@
 
       const btn = document.getElementById("submitBtn");
       const status = document.getElementById("statusPanel");
-      const classif = document.getElementById("classificationContent");
+      const current = document.getElementById("current");
+
+      current.style.visibility = "visible";
 
       if (phase === 1) {
         btn.textContent = "Systeem Crash - Verbinding verbroken";
@@ -1103,7 +1168,6 @@
           <p><strong>Fout:</strong> Kritieke storing actief. De sessie is hard onderbroken.</p>
           <p><strong>Actie:</strong> Herstel nog niet beschikbaar. Wacht op stabilisatie van de omgeving.</p>
         `;
-        classif.textContent = "CLASSIFICATIE_DATA_CORRUPT (CRASH)";
       } else {
         btn.textContent = "Herstel bezig - Systeemsectoren worden opgebouwd";
         status.style.background = "rgba(174, 200, 20, 0.10)";
@@ -1113,7 +1177,6 @@
           <p><strong>Fout:</strong> Beschadigde sectoren worden opnieuw samengesteld en gevalideerd.</p>
           <p><strong>Actie:</strong> Automatisch herstelprotocol actief. Invoer blijft tijdelijk vergrendeld.</p>
         `;
-        classif.textContent = "HERSTEL_ACTIEF... SECTOREN_WORDEN_OPGEBOUWD";
       }
 
       nextStatusPhase = phase;
@@ -1128,7 +1191,6 @@
       localStorage.removeItem("fopdesk_lock_endtime");
       isLocked = false;
       disableRadioButtons(false);
-      stopGlitch();
       resetToFaultState();
     }
 
@@ -1186,17 +1248,16 @@
       const btn = document.getElementById("submitBtn");
       if (!btn.classList.contains("active") || isLocked) return;
 
-      const t1 = document.getElementById("t1") ? document.getElementById("t1").textContent : "";
-      const t2 = document.getElementById("t2") ? document.getElementById("t2").textContent : "";
-      const t3 = document.getElementById("t3") ? document.getElementById("t3").textContent : "";
+      const isCorrect =
+        selections.t1 === "Applicatie" &&
+        selections.t2 === "Gemiddeld" &&
+        selections.t3 === "Cloudomgeving";
 
-      if (t1 === "Applicatie" && t2 === "Gemiddeld" && t3 === "Cloudomgeving") {
+      renderSubmittedClassification(isCorrect);
+
+      if (isCorrect) {
         const solution = document.getElementById("solution");
         const target = document.getElementById("classificationSection");
-
-        document.getElementById("classificationContent").style.display = "none";
-        document.getElementById("current").style.color = "var(--success)";
-        document.getElementById("current").style.visibility = "visible";
 
         solution.textContent = "De classificatie is goed! De code is: 2";
         solution.style.color = "white";
